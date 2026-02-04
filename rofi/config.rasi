@@ -1,0 +1,230 @@
+/*******************************************************************************
+ * macOS Spotlight-style Rofi
+ * Floating, rounded, blurred, with all modi
+ ******************************************************************************/
+
+configuration {
+    modi:                    "drun,run,filebrowser,window,ssh,keys";
+    show-icons:              true;
+    icon-theme:              "Papirus-Dark";
+    font:                    "JetBrains Mono Medium 12";
+    display-drun:            " Apps";
+    display-run:             " Run";
+    display-filebrowser:     " Files";
+    display-window:          " Windows";
+    display-ssh:             " SSH";
+    display-keys:            " Keys";
+    drun-display-format:     "{name}";
+    drun-match-fields:       "name,generic,exec,categories,keywords";
+    matching:                "fuzzy";
+    sort:                    true;
+    sorting-method:          "fzf";
+    case-sensitive:          false;
+    cycle:                   true;
+    scroll-method:           0;
+    click-to-exit:           true;
+    hover-select:            true;
+    normalize-match:         true;
+    application-fallback-icon: "application-x-executable";
+    terminal:                "kitty";
+    filebrowser {
+        directories-first:   true;
+        sorting-method:      "name";
+        show-hidden:         false;
+    }
+}
+
+/* ---- Color palette ---- */
+* {
+    bg:              rgba(30, 30, 46, 0.75);
+    bg-alt:          rgba(50, 50, 70, 0.60);
+    bg-selected:     rgba(229, 185, 198, 0.25);
+    fg:              #f4d9e1;
+    fg-dim:          #928374;
+    accent:          #E5B9C6;
+    urgent:          #f38ba8;
+    border-cl:       rgba(229, 185, 198, 0.3);
+
+    background-color: transparent;
+    text-color:       @fg;
+}
+
+/* ---- Window: floating, centered, rounded ---- */
+window {
+    location:         center;
+    anchor:           center;
+    width:            680px;
+    border:           1px;
+    border-color:     @border-cl;
+    border-radius:    16px;
+    background-color: @bg;
+    transparency:     "real";
+    cursor:           "default";
+    padding:          0px;
+}
+
+/* ---- Main layout ---- */
+mainbox {
+    spacing:          0px;
+    padding:          0px;
+    background-color: transparent;
+    children:         [ inputbar, message, listview, mode-switcher ];
+}
+
+/* ---- Search bar (Spotlight-style) ---- */
+inputbar {
+    spacing:          10px;
+    padding:          14px 20px;
+    background-color: transparent;
+    border:           0px 0px 1px 0px;
+    border-color:     @border-cl;
+    children:         [ prompt, entry ];
+}
+
+prompt {
+    background-color: transparent;
+    text-color:       @accent;
+    font:             "JetBrains Mono Bold 14";
+    vertical-align:   0.5;
+}
+
+entry {
+    background-color: transparent;
+    text-color:       @fg;
+    placeholder:      "Search...";
+    placeholder-color: @fg-dim;
+    cursor:           text;
+    font:             "JetBrains Mono 14";
+    vertical-align:   0.5;
+}
+
+/* ---- Message bar ---- */
+message {
+    padding:          8px 20px;
+    border:           0px 0px 1px 0px;
+    border-color:     @border-cl;
+    background-color: transparent;
+}
+
+textbox {
+    background-color: transparent;
+    text-color:       @fg-dim;
+    markup:           true;
+    vertical-align:   0.5;
+    horizontal-align: 0.0;
+}
+
+/* ---- Results list ---- */
+listview {
+    columns:          1;
+    lines:            8;
+    dynamic:          true;
+    fixed-height:     true;
+    scrollbar:        true;
+    cycle:            true;
+    layout:           vertical;
+    spacing:          2px;
+    padding:          8px 8px;
+    background-color: transparent;
+    cursor:           "default";
+}
+
+scrollbar {
+    handle-width:     4px;
+    handle-color:     @accent;
+    border-radius:    4px;
+    background-color: @bg-alt;
+    padding:          0px 2px;
+}
+
+/* ---- Result items ---- */
+element {
+    spacing:          12px;
+    padding:          8px 14px;
+    border:           0px;
+    border-radius:    10px;
+    background-color: transparent;
+    cursor:           pointer;
+}
+
+element.normal.normal,
+element.alternate.normal {
+    background-color: transparent;
+    text-color:       @fg;
+}
+
+element.normal.urgent,
+element.alternate.urgent {
+    background-color: transparent;
+    text-color:       @urgent;
+}
+
+element.normal.active,
+element.alternate.active {
+    background-color: transparent;
+    text-color:       @accent;
+}
+
+element.selected.normal {
+    background-color: @bg-selected;
+    text-color:       @fg;
+}
+
+element.selected.urgent {
+    background-color: @urgent;
+    text-color:       @bg;
+}
+
+element.selected.active {
+    background-color: @bg-selected;
+    text-color:       @accent;
+}
+
+element-icon {
+    size:             26px;
+    background-color: transparent;
+    text-color:       inherit;
+    cursor:           inherit;
+    vertical-align:   0.5;
+}
+
+element-text {
+    background-color: transparent;
+    text-color:       inherit;
+    highlight:        bold #E5B9C6;
+    cursor:           inherit;
+    vertical-align:   0.5;
+    horizontal-align: 0.0;
+}
+
+/* ---- Mode switcher (bottom tab bar) ---- */
+mode-switcher {
+    spacing:          0px;
+    padding:          0px;
+    background-color: transparent;
+    border:           1px 0px 0px 0px;
+    border-color:     @border-cl;
+}
+
+button {
+    padding:          10px 0px;
+    background-color: transparent;
+    text-color:       @fg-dim;
+    cursor:           pointer;
+    horizontal-align: 0.5;
+    font:             "JetBrains Mono 10";
+}
+
+button selected {
+    background-color: @bg-selected;
+    text-color:       @accent;
+    border:           0px;
+    border-radius:    0px;
+}
+
+/* ---- Error message ---- */
+error-message {
+    padding:          12px;
+    background-color: @bg;
+    text-color:       @urgent;
+}
